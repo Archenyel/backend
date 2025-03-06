@@ -6,7 +6,7 @@ require("dotenv").config();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-const serviceAccount = require("../../../claves/desarrolloweb-d9056-firebase-adminsdk-fbsvc-af83eed8a5.json");
+const serviceAccount = JSON.parse(process.env.FIREBASE_CREDENTIALS);
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
 });
