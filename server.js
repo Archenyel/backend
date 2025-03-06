@@ -14,9 +14,20 @@ admin.initializeApp({
 const db = admin.firestore();
 const app = express();
 
+const allowedOrigins = [
+  "https://tu-frontend.onrender.com",
+  "http://localhost:3000",
+];
+
 app.use(
   cors({
-    origin: "*",
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
@@ -53,7 +64,7 @@ app.post("/registro", async (req, res) => {
       rol: "usuario",
     });
 
-    res.status(201).json({ message: "Registro exitoso" });
+    res.status(200).json({ message: "Registro exitoso" });
   } catch (error) {
     console.error("Error en el registro:", error);
     res.status(500).json({ error: "Error al registrar el usuario" });
@@ -76,7 +87,7 @@ app.post("/registerTask", async (req, res) => {
       createdAt: new Date().toISOString(),
     });
 
-    res.status(201).json({ message: "Tarea registrada", id: newTaskRef.id });
+    res.status(200).json({ message: "Tarea registrada", id: newTaskRef.id });
   } catch (error) {
     console.error("Error al registrar la tarea:", error);
     res.status(500).json({ error: "Error interno del servidor" });
@@ -337,7 +348,7 @@ app.post("/assignedTask", async (req, res) => {
     await taskRef.add(newTask);
 
     res
-      .status(201)
+      .status(200)
       .json({ message: "Tarea asignada con éxito", task: newTask });
   } catch (error) {
     console.error("Error al asignar tarea:", error);
