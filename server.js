@@ -17,6 +17,7 @@ const app = express();
 const allowedOrigins = [
   "https://tu-frontend.onrender.com",
   "http://localhost:3000",
+  "https://escuela-ashy.vercel.app",
 ];
 
 app.use(
